@@ -1,7 +1,7 @@
 use engage::menu::{config::{ConfigBasicMenuItem, ConfigBasicMenuItemGaugeMethods}, BasicMenuResult};
 use unity::prelude::*;
 
-use crate::{CONFIG, event::*};
+use crate::{config::CONFIG, event::*};
 
 pub struct DiscountSetting;
 

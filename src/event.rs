@@ -1,7 +1,7 @@
 use cobapi::{SystemEvent, Event};
 use engage::gamedata::Gamedata;
 
-use crate::{CONFIG, gameparam::GameParam};
+use crate::{config::CONFIG, gameparam::GameParam};
 
 // Change the values when the language is loaded, this is after Gamedata is loaded, so no issues occur there. Reloading Gamedata might revert these changes.
 #[no_mangle]

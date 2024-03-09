@@ -2,7 +2,7 @@
 use engage::menu::{config::{ConfigBasicMenuItemSwitchMethods, ConfigBasicMenuItem}, BasicMenuResult};
 use unity::prelude::*;
 
-use crate::CONFIG;
+use crate::config::CONFIG;
 
 pub struct EmblemLeaveSetting;
 
