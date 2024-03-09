@@ -14,6 +14,7 @@ impl ConfigBasicMenuItemGaugeMethods for DiscountSetting {
         let result = ConfigBasicMenuItem::change_key_value_f(CONFIG.lock().unwrap().discount, 0.0, 1.0, 0.1);
         if CONFIG.lock().unwrap().discount != result {
             CONFIG.lock().unwrap().discount = result;
+            this.gauge_ratio = result;
             Self::set_help_text(this, None);
             this.update_text();
             discount_change();
@@ -26,7 +27,7 @@ impl ConfigBasicMenuItemGaugeMethods for DiscountSetting {
     }
 
     extern "C" fn set_help_text(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) {
-        this.help_text = format!("Silver Card Discount: {}%", (CONFIG.lock().unwrap().discount*100.0) as i32).into();
+        this.help_text = format!("Silver Card Discount: {}%", (this.gauge_ratio*100.0) as i32).into();
     }
 }
 
