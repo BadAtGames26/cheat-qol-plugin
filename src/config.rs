@@ -15,7 +15,6 @@ pub struct Config {
     pub ring: i32,
     pub discount: f32,
     pub well: i32,
-
 }
 
 impl Config {

@@ -130,8 +130,9 @@ pub fn ring_change() {
 pub fn discount_change() {
     // Silver Card Discount Rate
     let param = GameParam::get_mut("シルバーカード割引率").unwrap();
-    param.value =CONFIG.lock().unwrap().discount;
-    println!("Setting silver card discount rate to {}", param.value);
+    // Some math to round numbers evenly
+    param.value = (CONFIG.lock().unwrap().discount*10.0).round() / 10.0;
+    println!("Setting silver card discount rate to {:.1}", param.value);
 }
 
 pub fn well_change() {

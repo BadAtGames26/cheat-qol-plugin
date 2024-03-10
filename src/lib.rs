@@ -1,7 +1,5 @@
 #![feature(lazy_cell, ptr_sub_ptr)]
 
-use unity::prelude::*;
-
 mod config;
 mod emblem;
 mod arena;
@@ -15,15 +13,14 @@ mod well;
 
 use crate::config::CONFIG;
 use std::sync::LazyLock;
+use skyline::hooks::InlineCtx;
 
-#[unity::hook{"App","ScriptUnit","GodUnitSetEscape"}]
-pub fn godunitsetescape(args: &u64, method_info: OptionalMethod) {
-    // Check what the config bool is and do not call the function if it is true.
+// Using an inline hook here is safer than just skipping GodEscape entirely since this will make calls that set IsEscaping to false still run
+#[skyline::hook(offset=0x021a0b6c, inline)]
+pub fn godescape_hook(ctx: &mut InlineCtx) {
     if CONFIG.lock().unwrap().godescape {
-        println!("GodEsacpe was skipped due to settings.");
-    } else {
-        // Call the original function if the bool is false, default behavior.
-        call_original!(args, method_info);
+        unsafe { *ctx.registers[8].x.as_mut() = 0; }
+        println!("GodEscape was set to false.")
     }
 }
 
@@ -64,5 +61,5 @@ pub fn main() {
     event::listener_install();
     silvercard::discount_install();
     well::well_install();
-    skyline::install_hooks!(godunitsetescape);
+    skyline::install_hooks!(godescape_hook);
 }

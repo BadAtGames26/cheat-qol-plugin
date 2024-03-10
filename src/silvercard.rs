@@ -27,7 +27,8 @@ impl ConfigBasicMenuItemGaugeMethods for DiscountSetting {
     }
 
     extern "C" fn set_help_text(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) {
-        this.help_text = format!("Silver Card Discount: {}%", (this.gauge_ratio*100.0) as i32).into();
+        // Doing some math to fix an issue where sometimes a number will appear as 1 less than it should be (89 instead of 90)
+        this.help_text = format!("Silver Card Discount: {}%", ((this.gauge_ratio*10.0).round() *10.0 ) as i32).into();
     }
 }
 
