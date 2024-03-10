@@ -11,6 +11,7 @@ mod rewind;
 mod summon;
 mod ring;
 mod silvercard;
+mod well;
 
 use crate::config::CONFIG;
 use std::sync::LazyLock;
@@ -62,5 +63,6 @@ pub fn main() {
     ring::ring_install();
     event::listener_install();
     silvercard::discount_install();
+    well::well_install();
     skyline::install_hooks!(godunitsetescape);
 }

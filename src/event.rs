@@ -13,44 +13,39 @@ extern "C" fn listener(event: &Event<SystemEvent>) {
             summon_change();
             ring_change();
             discount_change();
+            well_change();
+
         }
     }
 }
 
 pub fn arenalimit_change() {
     // Arena:Battle Limmit
-    let param = GameParam::get_mut("闘技場:回数制限");
-    if param.is_some() {
-        let param = param.unwrap();
-        param.value = match CONFIG.lock().unwrap().arenalimit  {
+    let param = GameParam::get_mut("闘技場:回数制限").unwrap();
+    param.value = match CONFIG.lock().unwrap().arenalimit  {
             1 => 0.0,
             2 => 5.0,
             3 => 10.0,
             4 => 100.0,
             5 => 1000.0,
-            _ => 3.0,
-
-        };
-        println!("Setting number of arena battles to {}", param.value);
-    }
+            _ => param.initial,
+    };
+    println!("Setting number of arena battles to {}", param.value);
 }
 
 pub fn rewind_change() {
     // The three params that control rewinds for Normal, Hard and Lunatic
     let paramlist = ["巻き戻し最大回数ノーマル", "巻き戻し最大回数ハード", "巻き戻し最大回数ルナティック"];
     for item in paramlist {
-        let param = GameParam::get_mut(item);
-        if param.is_some() {
-            let param = param.unwrap();
-            param.value = match CONFIG.lock().unwrap().rewind  {
-                1 => 0.0,
-                2 => 10.0,
-                3 => -1.0,
-                _ => param.initial,
+        let param = GameParam::get_mut(item).unwrap();
+        param.value = match CONFIG.lock().unwrap().rewind  {
+            1 => 0.0,
+            2 => 10.0,
+            3 => -1.0,
+            _ => param.initial,
     
-            };
-            println!("Setting number of rewinds to {}", param.value);
-        }
+        };
+        println!("Setting number of rewinds to {}", param.value);
     }
 }
 
@@ -125,7 +120,9 @@ pub fn ring_change() {
         _ => {
             param1.value = param1.initial;
             param2.value = param2.initial;
-            param3.value = param3.initial;  
+            param3.value = param3.initial;
+            println!("Rings will appear at normal rates");
+  
         }
     }
 }
@@ -135,6 +132,60 @@ pub fn discount_change() {
     let param = GameParam::get_mut("シルバーカード割引率").unwrap();
     param.value =CONFIG.lock().unwrap().discount;
     println!("Setting silver card discount rate to {}", param.value);
+}
+
+pub fn well_change() {
+    let param1 = GameParam::get_mut("井戸期待度２必要価値").unwrap();
+    let param2 = GameParam::get_mut("井戸期待度３必要価値").unwrap();
+    let param3 = GameParam::get_mut("井戸期待度４必要価値").unwrap();
+    let param4 = GameParam::get_mut("井戸期待度５必要価値").unwrap();
+    match CONFIG.lock().unwrap().well {
+        // Setting the cost for all well rankings to 1 million except for the one we want, so its still possible to get that ranking, but unlikely in normal gameplay.
+        1 => {
+            param1.value = 1000000.0;
+            param2.value = 1000000.0;
+            param3.value = 1000000.0;
+            param4.value = 1000000.0;
+            println!("Well will be 1*");
+        }
+        2 => {
+            param1.value = 0.0;
+            param2.value = 1000000.0;
+            param3.value = 1000000.0;
+            param4.value = 1000000.0;
+            println!("Well will be 2*");
+
+        }
+        3 => {
+            param1.value = 1000000.0;
+            param2.value = 0.0;
+            param3.value = 100000.0;
+            param4.value = 1000000.0;
+            println!("Well will be 3*");
+        }
+        4 => {
+            param1.value = 1000000.0;
+            param2.value = 1000000.0;
+            param3.value = 0.0;
+            param3.value = 1000000.0;
+            println!("Well will be 4*");
+        }
+        5 => {
+            param1.value = 1000000.0;
+            param2.value = 1000000.0;
+            param3.value = 1000000.0;
+            param4.value = 0.0;
+            println!("Well will be 5*");
+        }
+        _ => {
+            param1.value = param1.initial;
+            param2.value = param2.initial;
+            param3.value = param3.initial;
+            param4.value = param4.initial; 
+            println!("Well will act according to default settings");
+        }
+    }
+
 }
 
 // This is just a function to use in the main function since it did not like calling the listener function from here

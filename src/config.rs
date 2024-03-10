@@ -14,6 +14,8 @@ pub struct Config {
     pub summon: i32,
     pub ring: i32,
     pub discount: f32,
+    pub well: i32,
+
 }
 
 impl Config {
@@ -53,6 +55,7 @@ impl Config {
             summon: 0,
             ring: 0,
             discount: 0.3,
+            well: 0,
         };
         config
     }
