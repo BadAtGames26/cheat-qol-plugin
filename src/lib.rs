@@ -10,6 +10,7 @@ mod summon;
 mod ring;
 mod silvercard;
 mod well;
+mod settingsmenu;
 
 use crate::config::CONFIG;
 use std::sync::LazyLock;
@@ -24,7 +25,7 @@ pub fn godescape_hook(ctx: &mut InlineCtx) {
     }
 }
 
-#[skyline::main(name = "cheat-qol")]
+#[skyline::main(name = "cheatqol")]
 pub fn main() {
     std::panic::set_hook(Box::new(|info| {
         let location = info.location().unwrap();
@@ -53,13 +54,15 @@ pub fn main() {
         );
     }));
     LazyLock::force(&CONFIG) ;
-    emblem::emblemleave_install();
-    arena::arenalimit_install();
-    rewind::rewind_install();
-    summon::summon_install();
-    ring::ring_install();
     event::listener_install();
-    silvercard::discount_install();
-    well::well_install();
+    settingsmenu::submenu_install();
+    // older global installs, unused with the submenu
+    //emblem::emblemleave_install();
+    //arena::arenalimit_install();
+    //rewind::rewind_install();
+    //summon::summon_install();
+    //ring::ring_install();
+    //silvercard::discount_install();
+    //well::well_install();
     skyline::install_hooks!(godescape_hook);
 }

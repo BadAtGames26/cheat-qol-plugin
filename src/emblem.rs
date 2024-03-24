@@ -43,7 +43,7 @@ impl ConfigBasicMenuItemSwitchMethods for EmblemLeaveSetting {
     }
 }
 
-#[no_mangle]
+/* #[no_mangle]
 extern "C" fn emblemleave_callback() -> &'static mut ConfigBasicMenuItem {
     ConfigBasicMenuItem::new_switch::<EmblemLeaveSetting>("Toggle GodEscape")
 }
@@ -51,5 +51,4 @@ extern "C" fn emblemleave_callback() -> &'static mut ConfigBasicMenuItem {
 
 pub fn emblemleave_install() {
     cobapi::install_global_game_setting(emblemleave_callback);
-}
-
+} */

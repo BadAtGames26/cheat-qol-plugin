@@ -17,7 +17,6 @@ impl ConfigBasicMenuItemSwitchMethods for ArenaLimitSetting {
             Self::set_help_text(this, None);
             Self::set_command_text(this, None);
             this.update_text();
-            arenalimit_change();
             // Update the config here by writing if the value changed.
             CONFIG.lock().unwrap().write();
             BasicMenuResult::se_cursor()
@@ -42,7 +41,7 @@ impl ConfigBasicMenuItemSwitchMethods for ArenaLimitSetting {
     }
 }
 
-#[no_mangle]
+/* #[no_mangle]
 extern "C" fn arenalimit_callback() -> &'static mut ConfigBasicMenuItem {
     ConfigBasicMenuItem::new_switch::<ArenaLimitSetting>("Arena Limit Value")
 }
@@ -50,6 +49,4 @@ extern "C" fn arenalimit_callback() -> &'static mut ConfigBasicMenuItem {
 
 pub fn arenalimit_install() {
     cobapi::install_global_game_setting(arenalimit_callback);
-}
-
-
+} */

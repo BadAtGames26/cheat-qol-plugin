@@ -1,5 +1,5 @@
 [package]
-name = "qol-plugin"
+name = "cheatqol"
 version = "0.1.0"
 authors = ["BadAtGames26"]
 edition = "2021"
@@ -11,8 +11,8 @@ titleid = "0100a6301214e000" # Fire Emblem Engage
 crate-type = ["cdylib"]
 
 [dependencies]
-cobapi = { git = "https://github.com/DivineDragonFanClub/cobapi.git", version = "0.2.0" }
-engage = { git = "https://github.com/DivineDragonFanClub/engage.git", version = "0.2.0" }
+cobapi = { git = "https://github.com/DivineDragonFanClub/cobapi.git", version = "0.3.0" }
+engage = { git = "https://github.com/DivineDragonFanClub/engage.git", version = "0.5.0" }
 serde = { version = "1.0.197", features = ["derive"]}
 skyline = "0.2.0"
 toml = "0.8.10"

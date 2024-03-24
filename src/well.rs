@@ -17,7 +17,6 @@ impl ConfigBasicMenuItemSwitchMethods for WellSetting {
             Self::set_help_text(this, None);
             Self::set_command_text(this, None);
             this.update_text();
-            well_change();
             // Update the config here by writing if the value changed.
             CONFIG.lock().unwrap().write();
             BasicMenuResult::se_cursor()
@@ -42,11 +41,11 @@ impl ConfigBasicMenuItemSwitchMethods for WellSetting {
     }
 }
 
-#[no_mangle]
+/* #[no_mangle]
 extern "C" fn well_callback() -> &'static mut ConfigBasicMenuItem {
     ConfigBasicMenuItem::new_switch::<WellSetting>("Well Star Rating")
 }
 
 pub fn well_install() {
     cobapi::install_global_game_setting(well_callback);
-}
+} */

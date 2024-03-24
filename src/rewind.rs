@@ -17,7 +17,6 @@ impl ConfigBasicMenuItemSwitchMethods for RewindSetting {
             Self::set_help_text(this, None);
             Self::set_command_text(this, None);
             this.update_text();
-            rewind_change();
             // Update the config here by writing if the value changed.
             CONFIG.lock().unwrap().write();
             BasicMenuResult::se_cursor()
@@ -40,7 +39,7 @@ impl ConfigBasicMenuItemSwitchMethods for RewindSetting {
     }
 }
 
-#[no_mangle]
+/* #[no_mangle]
 extern "C" fn rewind_callback() -> &'static mut ConfigBasicMenuItem {
     ConfigBasicMenuItem::new_switch::<RewindSetting>("Rewind Value")
 }
@@ -48,6 +47,4 @@ extern "C" fn rewind_callback() -> &'static mut ConfigBasicMenuItem {
 
 pub fn rewind_install() {
     cobapi::install_global_game_setting(rewind_callback);
-}
-
-
+} */

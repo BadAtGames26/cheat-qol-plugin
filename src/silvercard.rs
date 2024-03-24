@@ -17,7 +17,6 @@ impl ConfigBasicMenuItemGaugeMethods for DiscountSetting {
             this.gauge_ratio = result;
             Self::set_help_text(this, None);
             this.update_text();
-            discount_change();
             // Update the config here by writing if the value changed.
             CONFIG.lock().unwrap().write();
             BasicMenuResult::se_cursor()
@@ -32,7 +31,7 @@ impl ConfigBasicMenuItemGaugeMethods for DiscountSetting {
     }
 }
 
-#[no_mangle]
+/* #[no_mangle]
 extern "C" fn discount_callback() -> &'static mut ConfigBasicMenuItem {
     ConfigBasicMenuItem::new_gauge::<DiscountSetting>("Silver Card Discount Rate")
 }
@@ -40,6 +39,4 @@ extern "C" fn discount_callback() -> &'static mut ConfigBasicMenuItem {
 
 pub fn discount_install() {
     cobapi::install_global_game_setting(discount_callback);
-}
-
-
+} */

@@ -7,14 +7,17 @@ use crate::{config::CONFIG, gameparam::GameParam};
 #[no_mangle]
 extern "C" fn listener(event: &Event<SystemEvent>) {
     if let Event::Args(ev) = event {
-        if let SystemEvent::LanguageChanged = ev {
-            arenalimit_change();
-            rewind_change();
-            summon_change();
-            ring_change();
-            discount_change();
-            well_change();
-
+        if let SystemEvent::ProcInstJump { proc, label } = ev {
+            // Loads the config values around the time the save is loaded and the running sprites appear
+            if proc.hashcode == -1118443598 && *label == 0 {
+                println!("Attempting to change settings for Cheats/QOL Plugin");
+                arenalimit_change();
+                rewind_change();
+                summon_change();
+                ring_change();
+                discount_change();
+                well_change();
+            }
         }
     }
 }

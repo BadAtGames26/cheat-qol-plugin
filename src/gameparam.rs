@@ -1,5 +1,3 @@
-#![allow(dead_code)]
-
 use unity::prelude::*;
 use engage::gamedata::*;
 
@@ -9,10 +7,10 @@ pub struct GameParam {
     pub name: &'static Il2CppString,
     pub english: &'static Il2CppString,
     pub value: f32,
-    pub min: f32,
-    pub max: f32,
-    pub step: f32,
-    pub enumerator: &'static Il2CppString,
+    min: f32,
+    max: f32,
+    step: f32,
+    enumerator: &'static Il2CppString,
     pub initial: f32,
 }
 
