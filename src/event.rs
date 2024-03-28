@@ -9,7 +9,8 @@ extern "C" fn listener(event: &Event<SystemEvent>) {
     if let Event::Args(ev) = event {
         if let SystemEvent::ProcInstJump { proc, label } = ev {
             // Loads the config values around the time the save is loaded and the running sprites appear
-            if proc.hashcode == -1118443598 && *label == 0 {
+            // MainMainSequence, 29 = Select Save, 6 = Select New Game
+            if proc.hashcode == -1912552174 && (*label == 29 || *label == 6) {
                 println!("Attempting to change settings for Cheats/QOL Plugin");
                 arenalimit_change();
                 rewind_change();
