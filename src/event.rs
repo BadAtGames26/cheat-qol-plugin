@@ -49,7 +49,13 @@ pub fn rewind_change() {
             _ => param.initial,
     
         };
-        println!("Setting number of rewinds to {}", param.value);
+        let difficulty = match item {
+            "巻き戻し最大回数ノーマル" => "Normal",
+            "巻き戻し最大回数ハード" => "Hard",
+            "巻き戻し最大回数ルナティック" => "Maddening",
+            _ => "Unknown",
+        };
+        println!("Setting number of {} rewinds to {}", difficulty, param.value);
     }
 }
 
