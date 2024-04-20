@@ -178,7 +178,7 @@ pub fn well_change() {
             param1.value = 1000000.0;
             param2.value = 1000000.0;
             param3.value = 0.0;
-            param3.value = 1000000.0;
+            param4.value = 1000000.0;
             println!("Well will be 4*");
         }
         5 => {
