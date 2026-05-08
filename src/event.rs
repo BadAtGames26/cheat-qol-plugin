@@ -1,7 +1,7 @@
 use cobapi::{SystemEvent, Event};
 use engage::gamedata::Gamedata;
 
-use crate::{config::CONFIG, gameparam::GameParam};
+use crate::{config::QOLCONFIG, gameparam::GameParam};
 
 // Change the values when the language is loaded, this is after Gamedata is loaded, so no issues occur there. Reloading Gamedata might revert these changes.
 #[no_mangle]
@@ -26,7 +26,7 @@ extern "C" fn listener(event: &Event<SystemEvent>) {
 pub fn arenalimit_change() {
     // Arena:Battle Limmit
     let param = GameParam::get_mut("闘技場:回数制限").unwrap();
-    param.value = match CONFIG.lock().unwrap().arenalimit  {
+    param.value = match QOLCONFIG.lock().unwrap().arenalimit  {
             1 => 0.0,
             2 => 5.0,
             3 => 10.0,
@@ -42,7 +42,7 @@ pub fn rewind_change() {
     let paramlist = ["巻き戻し最大回数ノーマル", "巻き戻し最大回数ハード", "巻き戻し最大回数ルナティック"];
     for item in paramlist {
         let param = GameParam::get_mut(item).unwrap();
-        param.value = match CONFIG.lock().unwrap().rewind  {
+        param.value = match QOLCONFIG.lock().unwrap().rewind  {
             1 => 0.0,
             2 => 10.0,
             3 => -1.0,
@@ -65,7 +65,7 @@ pub fn summon_change() {
     let param1 = GameParam::get_mut(paramlist[0]).unwrap();
     let param2 = GameParam::get_mut(paramlist[1]).unwrap();
     let param3 = GameParam::get_mut(paramlist[2]).unwrap();
-    match CONFIG.lock().unwrap().summon {
+    match QOLCONFIG.lock().unwrap().summon {
         // Setting the appearance rate to 100 for the rarity we want to appear and the other two to 0
         1 => {
             param1.value = 100.0;
@@ -100,7 +100,7 @@ pub fn ring_change() {
     let param1 = GameParam::get_mut(paramlist[0]).unwrap();
     let param2 = GameParam::get_mut(paramlist[1]).unwrap();
     let param3 = GameParam::get_mut(paramlist[2]).unwrap();
-    match CONFIG.lock().unwrap().ring {
+    match QOLCONFIG.lock().unwrap().ring {
         // Setting the appearance rate to 100 for the rarity we want to appear and the other two to 0, for C rarity all are set to 0
         1 => {
             param1.value = 0.0;
@@ -141,7 +141,7 @@ pub fn discount_change() {
     // Silver Card Discount Rate
     let param = GameParam::get_mut("シルバーカード割引率").unwrap();
     // Some math to round numbers evenly
-    param.value = (CONFIG.lock().unwrap().discount*10.0).round() / 10.0;
+    param.value = (QOLCONFIG.lock().unwrap().discount*10.0).round() / 10.0;
     println!("Setting silver card discount rate to {:.1}", param.value);
 }
 
@@ -150,7 +150,7 @@ pub fn well_change() {
     let param2 = GameParam::get_mut("井戸期待度３必要価値").unwrap();
     let param3 = GameParam::get_mut("井戸期待度４必要価値").unwrap();
     let param4 = GameParam::get_mut("井戸期待度５必要価値").unwrap();
-    match CONFIG.lock().unwrap().well {
+    match QOLCONFIG.lock().unwrap().well {
         // Setting the cost for all well rankings to 1 million except for the one we want, so its still possible to get that ranking, but unlikely in normal gameplay.
         1 => {
             param1.value = 1000000.0;

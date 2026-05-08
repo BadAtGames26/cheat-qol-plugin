@@ -11,12 +11,13 @@ titleid = "0100a6301214e000" # Fire Emblem Engage
 crate-type = ["cdylib"]
 
 [dependencies]
-cobapi = { git = "https://github.com/DivineDragonFanClub/cobapi.git", version = "0.3.0" }
-engage = { git = "https://github.com/DivineDragonFanClub/engage.git", version = "0.5.0" }
-serde = { version = "1.0.197", features = ["derive"]}
-skyline = "0.2.0"
+cobapi = { git = "https://github.com/DivineDragonFanClub/cobapi.git", version = "0.4.0" }
+derive = "1.0.0"
+engage = { git = "https://github.com/DivineDragonFanClub/engage.git", version = "0.11.0" }
+serde = { version = "1.0.197", features = ["derive"] }
+skyline = { version = "0.6.0" }
 toml = "0.8.10"
-unity = { git = "https://github.com/DivineDragonFanClub/unity.git", version = "0.2.0" }
+unity = { git = "https://github.com/DivineDragonFanClub/unity.git", version = "0.3.0" }
 
 [profile.dev]
 panic = "abort"

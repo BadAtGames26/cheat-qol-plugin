@@ -2,24 +2,24 @@
 use engage::menu::{config::{ConfigBasicMenuItemSwitchMethods, ConfigBasicMenuItem}, BasicMenuResult};
 use unity::prelude::*;
 
-use crate::config::CONFIG;
+use crate::config::QOLCONFIG;
 
 pub struct EmblemLeaveSetting;
 
 impl ConfigBasicMenuItemSwitchMethods for EmblemLeaveSetting { 
     fn init_content(_this: &mut ConfigBasicMenuItem) {
-        let _toggle = CONFIG.lock().unwrap().godescape;
+        let _toggle = QOLCONFIG.lock().unwrap().godescape;
     }
 
     extern "C" fn custom_call(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) -> BasicMenuResult {
-        let result = ConfigBasicMenuItem::change_key_value_b(CONFIG.lock().unwrap().godescape);
-        if CONFIG.lock().unwrap().godescape != result {
-            CONFIG.lock().unwrap().godescape = result;
+        let result = ConfigBasicMenuItem::change_key_value_b(QOLCONFIG.lock().unwrap().godescape);
+        if QOLCONFIG.lock().unwrap().godescape != result {
+            QOLCONFIG.lock().unwrap().godescape = result;
             Self::set_help_text(this, None);
             Self::set_command_text(this, None);
             this.update_text();
             // Update the config here by writing if the value changed.
-            CONFIG.lock().unwrap().write();
+            QOLCONFIG.lock().unwrap().write();
             BasicMenuResult::se_cursor()
         } else {
             BasicMenuResult::new()
@@ -27,7 +27,7 @@ impl ConfigBasicMenuItemSwitchMethods for EmblemLeaveSetting {
     }
 
     extern "C" fn set_command_text(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) {
-        if CONFIG.lock().unwrap().godescape {
+        if QOLCONFIG.lock().unwrap().godescape {
             this.command_text = "On".into();
         } else {
             this.command_text = "Off".into();
@@ -35,7 +35,7 @@ impl ConfigBasicMenuItemSwitchMethods for EmblemLeaveSetting {
     }
 
     extern "C" fn set_help_text(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) {
-        if CONFIG.lock().unwrap().godescape {
+        if QOLCONFIG.lock().unwrap().godescape {
             this.help_text = "Emblems will not be lost.".into();
         } else {
             this.help_text = "Emblems will be lost.".into();

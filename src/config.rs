@@ -3,8 +3,8 @@ use std::sync::{LazyLock, Mutex};
 
 
 // The path for the config file
-pub const CONFIG_PATH: &str = "sd:/engage/config/badconfig.toml";
-pub static CONFIG: LazyLock<Mutex<Config>> = LazyLock::new(|| Config::new().into());
+pub const QOLCONFIG_PATH: &str = "sd:/engage/config/badconfig.toml";
+pub static QOLCONFIG: LazyLock<Mutex<Config>> = LazyLock::new(|| Config::new().into());
 
 #[derive(Default, Deserialize, Serialize)]
 pub struct Config {
@@ -19,7 +19,7 @@ pub struct Config {
 
 impl Config {
     pub fn new() -> Self {
-        let config_content = std::fs::read_to_string(CONFIG_PATH);
+        let config_content = std::fs::read_to_string(QOLCONFIG_PATH);
         // If the file is read to a string or there is no failure, parse into the config struct.
         if config_content.is_ok() {
             let content = config_content.unwrap();
@@ -43,7 +43,7 @@ impl Config {
     // Function to write to a file, makes it look nice then writes to the path.
     pub fn write(&self) {
         let content = toml::to_string_pretty(&self).expect("Could not create toml from config.");
-        std::fs::write(CONFIG_PATH, &content).expect("Could not write new toml to sd:/engage/config");
+        std::fs::write(QOLCONFIG_PATH, &content).expect("Could not write new toml to sd:/engage/config");
     }
 
     pub fn default() -> Self {

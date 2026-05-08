@@ -1,23 +1,23 @@
 use engage::menu::{config::{ConfigBasicMenuItem, ConfigBasicMenuItemSwitchMethods}, BasicMenuResult};
 use unity::prelude::*;
-use crate::config::CONFIG;
+use crate::config::QOLCONFIG;
 
 pub struct WellSetting;
 
 impl ConfigBasicMenuItemSwitchMethods for WellSetting { 
     fn init_content(_this: &mut ConfigBasicMenuItem) {
-        let _value = CONFIG.lock().unwrap().well;
+        let _value = QOLCONFIG.lock().unwrap().well;
     }
 
     extern "C" fn custom_call(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) -> BasicMenuResult {
-        let result = ConfigBasicMenuItem::change_key_value_i(CONFIG.lock().unwrap().well, 0, 5, 1);
-        if CONFIG.lock().unwrap().well != result {
-            CONFIG.lock().unwrap().well = result;
+        let result = ConfigBasicMenuItem::change_key_value_i(QOLCONFIG.lock().unwrap().well, 0, 5, 1);
+        if QOLCONFIG.lock().unwrap().well != result {
+            QOLCONFIG.lock().unwrap().well = result;
             Self::set_help_text(this, None);
             Self::set_command_text(this, None);
             this.update_text();
             // Update the config here by writing if the value changed.
-            CONFIG.lock().unwrap().write();
+            QOLCONFIG.lock().unwrap().write();
             BasicMenuResult::se_cursor()
         } else {
             BasicMenuResult::new()
@@ -25,7 +25,7 @@ impl ConfigBasicMenuItemSwitchMethods for WellSetting {
     }
 
     extern "C" fn set_command_text(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) {
-        this.command_text = match CONFIG.lock().unwrap().well {
+        this.command_text = match QOLCONFIG.lock().unwrap().well {
             1 => "1*".into(),
             2 => "2*".into(),
             3 => "3*".into(),

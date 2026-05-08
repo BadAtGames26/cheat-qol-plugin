@@ -1,24 +1,24 @@
 use engage::menu::{config::{ConfigBasicMenuItem, ConfigBasicMenuItemGaugeMethods}, BasicMenuResult};
 use unity::prelude::*;
 
-use crate::config::CONFIG;
+use crate::config::QOLCONFIG;
 
 pub struct DiscountSetting;
 
 impl ConfigBasicMenuItemGaugeMethods for DiscountSetting { 
     fn init_content(this: &mut ConfigBasicMenuItem) {
-        this.gauge_ratio = CONFIG.lock().unwrap().discount;
+        this.gauge_ratio = QOLCONFIG.lock().unwrap().discount;
     }
 
     extern "C" fn custom_call(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) -> BasicMenuResult {
-        let result = ConfigBasicMenuItem::change_key_value_f(CONFIG.lock().unwrap().discount, 0.0, 1.0, 0.1);
-        if CONFIG.lock().unwrap().discount != result {
-            CONFIG.lock().unwrap().discount = result;
+        let result = ConfigBasicMenuItem::change_key_value_f(QOLCONFIG.lock().unwrap().discount, 0.0, 1.0, 0.1);
+        if QOLCONFIG.lock().unwrap().discount != result {
+            QOLCONFIG.lock().unwrap().discount = result;
             this.gauge_ratio = result;
             Self::set_help_text(this, None);
             this.update_text();
             // Update the config here by writing if the value changed.
-            CONFIG.lock().unwrap().write();
+            QOLCONFIG.lock().unwrap().write();
             BasicMenuResult::se_cursor()
         } else {
             BasicMenuResult::new()

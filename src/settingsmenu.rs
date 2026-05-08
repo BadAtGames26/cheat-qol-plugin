@@ -19,7 +19,7 @@ impl ConfigBasicMenuItemCommandMethods for Submenu {
                 // Initialize the menu
                 ConfigMenu::create_bind(this.menu);
                 
-                let config_menu = this.menu.proc.child.cast_mut::<BasicMenu<ConfigBasicMenuItem>>();
+                let config_menu = this.menu.proc.child.as_mut().unwrap().cast_mut::<BasicMenu<ConfigBasicMenuItem>>();
 
                 // Register a OnDispose callback to restore the previous menu
                 config_menu
@@ -63,13 +63,14 @@ extern "C" fn submenu_callback() -> &'static mut ConfigBasicMenuItem {
 }
 
 pub fn submenu_install() {
+    cobapi::install_game_setting(submenu_callback);
     cobapi::install_global_game_setting(submenu_callback);
 }
 
 // This is from the engage crate, its not a public function so we copy it here to use it
 extern "C" fn open_anime_all_ondispose(this: &mut ProcInst, _method_info: OptionalMethod) {
-    this.parent.get_class().get_virtual_method("OpenAnimeAll").map(|method| {
+    this.parent.as_ref().unwrap().get_class().get_virtual_method("OpenAnimeAll").map(|method| {
         let open_anime_all = unsafe { std::mem::transmute::<_, extern "C" fn(&ProcInst, &MethodInfo)>(method.method_info.method_ptr) };
-        open_anime_all(this.parent, method.method_info);
+        open_anime_all(this.parent.as_ref().unwrap(), method.method_info);
     });
 }
