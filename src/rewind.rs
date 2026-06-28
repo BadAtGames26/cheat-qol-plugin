@@ -1,22 +1,41 @@
-use engage::menu::{config::{ConfigBasicMenuItem, ConfigBasicMenuItemSwitchMethods}, BasicMenuResult};
+use engage::{prelude::*, root::configbasicmenuitem::*};
 use unity::prelude::*;
 
 use crate::config::QOLCONFIG;
 
-pub struct RewindSetting;
+#[unity::inject(
+    namespace = "BadCheats",
+    name = "RewindSetting",
+    parent = ConfigBasicMenuItem,
+)]
+pub struct RewindSetting{}
 
-impl ConfigBasicMenuItemSwitchMethods for RewindSetting { 
-    fn init_content(_this: &mut ConfigBasicMenuItem) {
-        let _value = QOLCONFIG.lock().unwrap().rewind;
+
+#[unity::injected_methods]
+impl RewindSetting{
+    #[override_virtual(name = "GetName")]
+    pub fn get_name(self) -> Il2CppString {
+       "Rewind Charges".into()
     }
 
-    extern "C" fn custom_call(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) -> BasicMenuResult {
-        let result = ConfigBasicMenuItem::change_key_value_i(QOLCONFIG.lock().unwrap().rewind, 0, 3, 1);
-        if QOLCONFIG.lock().unwrap().rewind != result {
+    #[override_virtual(name = "ACall")]
+    pub fn a_call(self) -> BasicMenuResult {
+        BasicMenuResult::new()
+    }
+
+    #[override_virtual(name = "BuildAttribute")]
+    pub fn build_attribute(self) -> BasicMenuItemAttribute {
+        BasicMenuItemAttribute::enable()
+    }
+
+    #[override_virtual(name = "CustomCall")]
+    pub fn custom_call(self) -> BasicMenuResult {
+        let value = QOLCONFIG.lock().unwrap().rewind;
+        let result = ConfigBasicMenuItem::change_key_value(value, 0, 6, 1);
+        if value != result {
             QOLCONFIG.lock().unwrap().rewind = result;
-            Self::set_help_text(this, None);
-            Self::set_command_text(this, None);
-            this.update_text();
+            self.set_m_command_text(Self::get_command_text(result));
+            self.update_text();
             // Update the config here by writing if the value changed.
             QOLCONFIG.lock().unwrap().write();
             BasicMenuResult::se_cursor()
@@ -25,26 +44,53 @@ impl ConfigBasicMenuItemSwitchMethods for RewindSetting {
         }
     }
 
-    extern "C" fn set_command_text(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) {
-        this.command_text = match QOLCONFIG.lock().unwrap().rewind {
-            1 => "0".into(),
-            2 => "10".into(),
-            3 => "Unlimited".into(),
-            _ => "Default".into(),
-        }
+    #[override_virtual(name = "InitContent")]
+    pub fn init_content(self) {
+        let value = QOLCONFIG.lock().unwrap().rewind;
+        self.set_title_text(self.get_name());
+        self.set_m_help_text("The number of rewinds that can be used in a battle.".into());
+        self.set_m_command_text(Self::get_command_text(value));
+        self.update_text();
+        
     }
 
-    extern "C" fn set_help_text(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) {
-        this.help_text = "The number of rewinds that can be used in a battle.".into();
+    #[override_virtual(name = "OnBuild")]
+    pub fn on_build(self) {
+        self.init_content();
     }
 }
 
-/* #[no_mangle]
-extern "C" fn rewind_callback() -> &'static mut ConfigBasicMenuItem {
-    ConfigBasicMenuItem::new_switch::<RewindSetting>("Rewind Value")
+impl RewindSetting {
+    pub fn get_command_text(value: i32) -> Il2CppString {
+        match value {
+            1 => "0",
+            2 => "1",
+            3 => "3",
+            4 => "5",
+            5 => "10",
+            6 => "Unlimited",
+            _ => "Default",
+        }.into()
+    }
 }
 
+pub fn register_rewind() -> Class {
+    let result = cobapi::injection::register::<RewindSetting>();
+    match result {
+        Ok(t) => {
+            t
+        },
+        Err(_e) => panic!("Failed to register RewindSetting."),
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn rewind_callback() -> ConfigBasicMenuItem {
+    let instance = RewindSetting::instantiate().unwrap();
+    instance.try_cast::<ConfigBasicMenuItem>().unwrap()
+}
 
 pub fn rewind_install() {
+    register_rewind();
     cobapi::install_global_game_setting(rewind_callback);
-} */
+}

@@ -1,16 +1,7 @@
-#![feature(ptr_sub_ptr)]
 
 mod config;
-mod emblem;
-mod arena;
-mod gameparam;
-mod event;
 mod rewind;
-mod summon;
-mod ring;
-mod silvercard;
-mod well;
-mod settingsmenu;
+mod event;
 
 use crate::config::QOLCONFIG;
 use std::sync::LazyLock;
@@ -53,8 +44,8 @@ pub fn main() {
             err_msg.as_str(),
         );
     }));
-    LazyLock::force(&QOLCONFIG) ;
+    LazyLock::force(&QOLCONFIG);
     event::listener_install();
-    settingsmenu::submenu_install();
+    rewind::rewind_install();
     skyline::install_hooks!(godescape_hook);
 }
