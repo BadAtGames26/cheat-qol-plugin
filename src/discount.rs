@@ -2,6 +2,8 @@ use engage::{prelude::*, root::{ConfigBasicMenuItem_ConfigMethodKind, configbasi
 use unity::prelude::*;
 
 use crate::config::QOLCONFIG;
+use engage::root::configbasicmenuitem::ConfigBasicMenuItem;
+use engage::app::basicmenuitem::BasicMenuItem;
 
 #[unity::inject(
     namespace = "BadCheats",
@@ -79,12 +81,12 @@ pub fn register_discount() -> Class {
 }
 
 #[no_mangle]
-pub extern "C" fn discount_callback() -> ConfigBasicMenuItem {
+pub extern "C" fn discount_callback() -> BasicMenuItem {
     let instance = DiscountSetting::instantiate().unwrap();
-    instance.try_cast::<ConfigBasicMenuItem>().unwrap()
+    instance.try_cast::<BasicMenuItem>().unwrap()
 }
 
-pub fn discount_install() {
-    register_discount();
-    cobapi::install_global_game_setting(discount_callback);
-}
+//pub fn discount_install() {
+//    register_discount();
+//    cobapi::install_global_game_setting(discount_callback);
+//}

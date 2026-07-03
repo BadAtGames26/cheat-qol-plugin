@@ -2,6 +2,7 @@ use engage::{prelude::*, root::configbasicmenuitem::*};
 use unity::prelude::*;
 
 use crate::config::QOLCONFIG;
+use engage::app::basicmenuitem::BasicMenuItem;
 
 #[unity::inject(
     namespace = "BadCheats",
@@ -84,12 +85,12 @@ pub fn register_arena() -> Class {
 }
 
 #[no_mangle]
-pub extern "C" fn arena_callback() -> ConfigBasicMenuItem {
+pub extern "C" fn arena_callback() -> BasicMenuItem {
     let instance = ArenaSetting::instantiate().unwrap();
-    instance.try_cast::<ConfigBasicMenuItem>().unwrap()
+    instance.try_cast::<BasicMenuItem>().unwrap()
 }
 
-pub fn arena_install() {
-    register_arena();
-    cobapi::install_global_game_setting(arena_callback);
-}
+//pub fn arena_install() {
+//    register_arena();
+//    cobapi::install_global_game_setting(arena_callback);
+//}

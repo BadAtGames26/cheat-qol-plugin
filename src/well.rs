@@ -2,6 +2,7 @@ use engage::{prelude::*, root::configbasicmenuitem::*};
 use unity::prelude::*;
 
 use crate::config::QOLCONFIG;
+use engage::app::basicmenuitem::BasicMenuItem;
 
 #[unity::inject(
     namespace = "BadCheats",
@@ -84,12 +85,12 @@ pub fn register_well() -> Class {
 }
 
 #[no_mangle]
-pub extern "C" fn well_callback() -> ConfigBasicMenuItem {
+pub extern "C" fn well_callback() -> BasicMenuItem {
     let instance = WellSetting::instantiate().unwrap();
-    instance.try_cast::<ConfigBasicMenuItem>().unwrap()
+    instance.try_cast::<BasicMenuItem>().unwrap()
 }
 
-pub fn well_install() {
-    register_well();
-    cobapi::install_global_game_setting(well_callback);
-}
+//pub fn well_install() {
+//    register_well();
+//    cobapi::install_global_game_setting(well_callback);
+//}

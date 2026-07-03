@@ -6,6 +6,7 @@ mod arena;
 mod summon;
 mod discount;
 mod ring;
+mod submenu;
 
 use crate::config::QOLCONFIG;
 use std::sync::LazyLock;
@@ -50,12 +51,17 @@ pub fn main() {
             err_msg.as_str(),
         );
     }));
+
     LazyLock::force(&QOLCONFIG);
+
     event::listener_install();
-    rewind::rewind_install();
-    well::well_install();
-    arena::arena_install();
-    summon::summon_install();
-    discount::discount_install();
-    ring::ring_install();
+
+    rewind::register_rewind();
+    well::register_well();
+    arena::register_arena();
+    summon::register_summon();
+    discount::register_discount();
+    ring::register_ring();
+
+    submenu::submenu_install();
 }

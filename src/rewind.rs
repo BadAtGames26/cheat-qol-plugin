@@ -2,6 +2,7 @@ use engage::{prelude::*, root::configbasicmenuitem::*};
 use unity::prelude::*;
 
 use crate::config::QOLCONFIG;
+use engage::app::basicmenuitem::BasicMenuItem;
 
 #[unity::inject(
     namespace = "BadCheats",
@@ -85,12 +86,12 @@ pub fn register_rewind() -> Class {
 }
 
 #[no_mangle]
-pub extern "C" fn rewind_callback() -> ConfigBasicMenuItem {
+pub extern "C" fn rewind_callback() -> BasicMenuItem {
     let instance = RewindSetting::instantiate().unwrap();
-    instance.try_cast::<ConfigBasicMenuItem>().unwrap()
+    instance.try_cast::<BasicMenuItem>().unwrap()
 }
 
-pub fn rewind_install() {
-    register_rewind();
-    cobapi::install_global_game_setting(rewind_callback);
-}
+//pub fn rewind_install() {
+//    register_rewind();
+//    cobapi::install_global_game_setting(rewind_callback);
+//}
