@@ -16,7 +16,7 @@ pub struct RingSetting{}
 impl RingSetting{
     #[override_virtual(name = "GetName")]
     pub fn get_name(self) -> Il2CppString {
-       "Ring Stars".into()
+       "Ring Rarity".into()
     }
 
     #[override_virtual(name = "ACall")]

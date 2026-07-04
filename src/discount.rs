@@ -17,7 +17,7 @@ pub struct DiscountSetting{}
 impl DiscountSetting{
     #[override_virtual(name = "GetName")]
     pub fn get_name(self) -> Il2CppString {
-       "Discount Charges".into()
+       "Card Discount".into()
     }
 
     #[override_virtual(name = "ACall")]
@@ -66,7 +66,7 @@ impl DiscountSetting{
 
 impl DiscountSetting {
     pub fn get_help_text(value: f32) -> Il2CppString {
-        format!("Silver Card Discount: {}%", (value)).into()
+        format!("Silver Card Discount: {}%", (value*100.0)).into()
     }
 }
 
