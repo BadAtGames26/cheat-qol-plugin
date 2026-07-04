@@ -49,15 +49,14 @@ impl Submenu {
         self.set_title_text(self.get_name());
         self.set_m_help_text("Open the settings menu for Cheats and QOL Plugin".into());
         self.set_m_command_text("Open".into());
+        self.set_m_is_arrow(false);
+        self.set_m_is_command_icon(true);
         self.update_text();
-        
     }
 
     #[override_virtual(name = "OnBuild")]
     pub fn on_build(self) {
         self.init_content();
-        self.set_m_is_arrow(false);
-        self.set_m_is_command_icon(true);
     }
 
 }
