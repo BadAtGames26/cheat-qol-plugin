@@ -76,7 +76,7 @@ pub fn register_discount() -> Class {
         Ok(t) => {
             t
         },
-        Err(_e) => panic!("Failed to register DiscountSetting."),
+        Err(e) => panic!("Failed to register DiscountSetting: {}.", e),
     }
 }
 

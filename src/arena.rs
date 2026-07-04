@@ -80,7 +80,7 @@ pub fn register_arena() -> Class {
         Ok(t) => {
             t
         },
-        Err(_e) => panic!("Failed to register ArenaSetting."),
+        Err(e) => panic!("Failed to register ArenaSetting: {}.", e),
     }
 }
 

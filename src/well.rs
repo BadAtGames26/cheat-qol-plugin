@@ -80,7 +80,7 @@ pub fn register_well() -> Class {
         Ok(t) => {
             t
         },
-        Err(_e) => panic!("Failed to register WellSetting."),
+        Err(e) => panic!("Failed to register WellSetting: {}.", e),
     }
 }
 

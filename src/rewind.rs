@@ -81,7 +81,7 @@ pub fn register_rewind() -> Class {
         Ok(t) => {
             t
         },
-        Err(_e) => panic!("Failed to register RewindSetting."),
+        Err(e) => panic!("Failed to register Rewinetting: {}.", e),
     }
 }
 

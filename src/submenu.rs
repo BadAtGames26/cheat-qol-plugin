@@ -115,7 +115,7 @@ pub fn register_submenu() -> Class {
         Ok(t) => {
             t
         },
-        Err(_e) => panic!("Failed to register RingSetting."),
+        Err(e) => panic!("Failed to register Submenu: {}.", e),
     }
 }
 

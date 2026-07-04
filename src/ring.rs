@@ -79,7 +79,7 @@ pub fn register_ring() -> Class {
         Ok(t) => {
             t
         },
-        Err(_e) => panic!("Failed to register RingSetting."),
+        Err(e) => panic!("Failed to register RingSetting: {}.", e),
     }
 }
 

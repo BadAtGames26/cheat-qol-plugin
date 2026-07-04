@@ -77,7 +77,7 @@ pub fn register_summon() -> Class {
         Ok(t) => {
             t
         },
-        Err(_e) => panic!("Failed to register SummonSetting."),
+        Err(e) => panic!("Failed to register SummonSetting: {}.", e),
     }
 }
 
