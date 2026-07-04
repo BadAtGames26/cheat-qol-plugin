@@ -1,29 +1,27 @@
-#![feature(ptr_sub_ptr)]
-
 mod config;
-mod emblem;
-mod arena;
-mod gameparam;
 mod event;
 mod rewind;
-mod summon;
-mod ring;
-mod silvercard;
 mod well;
-mod settingsmenu;
+mod arena;
+mod summon;
+mod discount;
+mod ring;
+mod submenu;
 
 use crate::config::QOLCONFIG;
 use std::sync::LazyLock;
-use skyline::hooks::InlineCtx;
+
+//use skyline::hooks::InlineCtx;
 
 // Using an inline hook here is safer than just skipping GodEscape entirely since this will make calls that set IsEscaping to false still run
-#[skyline::hook(offset=0x021a0b6c, inline)]
-pub fn godescape_hook(ctx: &mut InlineCtx) {
-    if QOLCONFIG.lock().unwrap().godescape {
-        ctx.registers[8].set_x(0);
-        println!("GodEscape was set to false.")
-    }
-}
+// Removed for being problematic.
+//#[skyline::hook(offset=0x021a0b6c, inline)]
+//pub fn godescape_hook(ctx: &mut InlineCtx) {
+//    if QOLCONFIG.lock().unwrap().godescape {
+//        ctx.registers[8].set_x(0);
+//        println!("GodEscape was set to false.")
+//    }
+//}
 
 #[skyline::main(name = "cheatqol")]
 pub fn main() {
@@ -53,8 +51,17 @@ pub fn main() {
             err_msg.as_str(),
         );
     }));
-    LazyLock::force(&QOLCONFIG) ;
+
+    LazyLock::force(&QOLCONFIG);
+
     event::listener_install();
-    settingsmenu::submenu_install();
-    skyline::install_hooks!(godescape_hook);
+
+    rewind::register_rewind();
+    well::register_well();
+    arena::register_arena();
+    summon::register_summon();
+    discount::register_discount();
+    ring::register_ring();
+
+    submenu::submenu_install();
 }

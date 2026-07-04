@@ -1,22 +1,41 @@
-use engage::menu::{config::{ConfigBasicMenuItem, ConfigBasicMenuItemSwitchMethods}, BasicMenuResult};
+use engage::{app::BasicMenuItem, prelude::*, root::configbasicmenuitem::*};
 use unity::prelude::*;
 
 use crate::config::QOLCONFIG;
 
-pub struct SummonSetting;
+#[unity::inject(
+    namespace = "BadCheats",
+    name = "SummonSetting",
+    parent = ConfigBasicMenuItem,
+)]
+pub struct SummonSetting{}
 
-impl ConfigBasicMenuItemSwitchMethods for SummonSetting { 
-    fn init_content(_this: &mut ConfigBasicMenuItem) {
-        let _value = QOLCONFIG.lock().unwrap().summon;
+
+#[unity::injected_methods]
+impl SummonSetting{
+    #[override_virtual(name = "GetName")]
+    pub fn get_name(self) -> Il2CppString {
+       "Summon Stars".into()
     }
 
-    extern "C" fn custom_call(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) -> BasicMenuResult {
-        let result = ConfigBasicMenuItem::change_key_value_i(QOLCONFIG.lock().unwrap().summon, 0, 3, 1);
-        if QOLCONFIG.lock().unwrap().summon != result {
+    #[override_virtual(name = "ACall")]
+    pub fn a_call(self) -> BasicMenuResult {
+        BasicMenuResult::new()
+    }
+
+    #[override_virtual(name = "BuildAttribute")]
+    pub fn build_attribute(self) -> BasicMenuItemAttribute {
+        BasicMenuItemAttribute::enable()
+    }
+
+    #[override_virtual(name = "CustomCall")]
+    pub fn custom_call(self) -> BasicMenuResult {
+        let value = QOLCONFIG.lock().unwrap().summon;
+        let result = ConfigBasicMenuItem::change_key_value(value, 0, 3, 1);
+        if value != result {
             QOLCONFIG.lock().unwrap().summon = result;
-            Self::set_help_text(this, None);
-            Self::set_command_text(this, None);
-            this.update_text();
+            self.set_m_command_text(Self::get_command_text(result));
+            self.update_text();
             // Update the config here by writing if the value changed.
             QOLCONFIG.lock().unwrap().write();
             BasicMenuResult::se_cursor()
@@ -25,30 +44,50 @@ impl ConfigBasicMenuItemSwitchMethods for SummonSetting {
         }
     }
 
-    extern "C" fn set_command_text(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) {
-        this.command_text = match QOLCONFIG.lock().unwrap().summon {
-            1 => "3*".into(),
-            2 => "4*".into(),
-            3 => "5*".into(),
-            _ => "Default".into(),
-        }
+    #[override_virtual(name = "InitContent")]
+    pub fn init_content(self) {
+        let value = QOLCONFIG.lock().unwrap().summon;
+        self.set_title_text(self.get_name());
+        self.set_m_help_text("The stars a summon will have.".into());
+        self.set_m_command_text(Self::get_command_text(value));
+        self.update_text();
+        
     }
 
-    extern "C" fn set_help_text(this: &mut ConfigBasicMenuItem, _method_info: OptionalMethod) {
-        if QOLCONFIG.lock().unwrap().summon == 0 {
-            this.help_text = "Summons will appear at normal rates and ranks.".into();
-        } else {
-            this.help_text = "Summons that appear will always have the set star rank.".into();
-        }
+    #[override_virtual(name = "OnBuild")]
+    pub fn on_build(self) {
+        self.init_content();
     }
 }
 
-/* #[no_mangle]
-extern "C" fn summon_callback() -> &'static mut ConfigBasicMenuItem {
-    ConfigBasicMenuItem::new_switch::<SummonSetting>("Summon Star Rank")
+impl SummonSetting {
+    pub fn get_command_text(value: i32) -> Il2CppString {
+        match value {
+            1 => "3*",
+            2 => "4*",
+            3 => "5*",
+            _ => "Default",
+        }.into()
+    }
 }
 
+pub fn register_summon() -> Class {
+    let result = cobapi::injection::register::<SummonSetting>();
+    match result {
+        Ok(t) => {
+            t
+        },
+        Err(_e) => panic!("Failed to register SummonSetting."),
+    }
+}
 
-pub fn summon_install() {
-    cobapi::install_global_game_setting(summon_callback);
-} */
+#[no_mangle]
+pub extern "C" fn summon_callback() -> BasicMenuItem {
+    let instance = SummonSetting::instantiate().unwrap();
+    instance.try_cast::<BasicMenuItem>().unwrap()
+}
+
+//pub fn summon_install() {
+//    register_summon();
+//    cobapi::install_global_game_setting(summon_callback);
+//}
